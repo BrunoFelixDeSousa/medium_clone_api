@@ -14,11 +14,10 @@ dotenv.config();
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      // entities: [__dirname + '../**/*.entity{.ts,.js}'],
-      entities: [TagEntity],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    TagModule
+    TagModule,
   ],
 })
 export class AppModule {}
