@@ -1,0 +1,9 @@
+@baseUrl = http://localhost:8080/api
+
+@authToken =
+
+# @name Obter Lista de Tags
+GET {{baseUrl}}/tags HTTP/1.1
+content-type: application/json
+
+###
