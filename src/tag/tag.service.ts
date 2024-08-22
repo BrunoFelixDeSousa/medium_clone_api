@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { TagEntity } from '@app/tag/tag.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,7 +10,7 @@ export class TagService {
     private readonly tagRepository: Repository<TagEntity>,
   ) {}
 
-  findAll(): Promise<TagEntity[]> {
-    return this.tagRepository.find();
+  async findAll(): Promise<TagEntity[]> {
+    return await this.tagRepository.find();
   }
 }
