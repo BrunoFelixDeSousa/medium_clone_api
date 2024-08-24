@@ -2,8 +2,16 @@
 
 @authToken =
 
-# @name Obter Lista de Tags
-GET {{baseUrl}}/tags HTTP/1.1
+# @name Registrar Usuário
+POST {{baseUrl}}/users HTTP/1.1
 content-type: application/json
+
+{
+  "user":{
+    "username": "janeDoe",
+    "email": "janedoe@email.com",
+    "password": "janeDoe123"
+  }
+}
 
 ###
