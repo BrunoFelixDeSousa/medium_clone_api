@@ -1,0 +1,16 @@
+@baseUrl = http://localhost:8080/api
+
+@authToken =
+
+# @name login
+POST {{baseUrl}}/auth/login HTTP/1.1
+content-type: application/json
+
+{
+  "user":{
+    "email": "janedoe@email.com",
+    "password": "janeDoe123"
+  }
+}
+
+###
