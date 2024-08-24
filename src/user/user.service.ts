@@ -13,7 +13,7 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async createUSer(createDto: CreateUserDto):Promise<UserResponse> {
+  async createUSer(createDto: CreateUserDto): Promise<UserResponse> {
     const newUser = new UserEntity();
 
     const userWithSameEmail = await this.userRepository.findOne({
@@ -26,13 +26,12 @@ export class UserService {
       throw new ConflictException('User with same e-mail already exists.');
     }
 
-    const hashedPassword = await hash(createDto.password, 10)
+    const hashedPassword = await hash(createDto.password, 10);
 
     Object.assign(newUser, { ...createDto, password: hashedPassword });
 
     const user = await this.userRepository.save(newUser);
-    const {password, ...result} = user;
+    const { password, ...result } = user;
     return result;
   }
-
 }

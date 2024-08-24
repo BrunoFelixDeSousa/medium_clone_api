@@ -6,6 +6,6 @@ export const userResponseSchema = z.object({
   email: z.string(),
   bio: z.string(),
   image: z.string(),
-})
+});
 
-export type  UserResponse = z.infer<typeof userResponseSchema>;
+export type UserResponse = z.infer<typeof userResponseSchema>;
