@@ -9,7 +9,10 @@ import {
 import { UserService } from '@app/user/user.service';
 import { ZodValidationPipe } from '@app/pipes/zod-validation-pipe';
 import { UserResponse } from '@app/user/schemas/userResponseSchema';
-import { CreateUserSchema, createUserSchema } from '@app/user/schemas/createUserSchema';
+import {
+  CreateUserSchema,
+  createUserSchema,
+} from '@app/user/schemas/createUserSchema';
 
 @Controller('users')
 export class UserController {
