@@ -46,10 +46,17 @@ export class AuthService {
       where: { email },
     });
 
-    if (user && await compare(password, user.password)) {
+    console.log('User found:', user); // Log para verificar se o usuário foi encontrado
+
+    if (user && (await compare(password, user.password))) {
       const { password, ...result } = user;
+
+      console.log('Password valid:', result); // Log para verificar se a senha é válida
+
       return result;
     }
+
+    console.log('Validation failed'); // Log caso a validação falhe
     return null;
   }
 }
