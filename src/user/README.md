@@ -12,11 +12,18 @@ Exemplo de corpo de solicitação:
   }
 }
 ```
-Nenhuma autenticação é necessária, retorna um [`Usuário`](#Usuário).
+Nenhuma autenticação é necessária, retorna um [Usuário](#Usuário).
 
 Campos obrigatórios: `username`, `email`, `password`.
 
-### Retorno: Usuário
+### Obter Usuário Atual
+
+`GET /api/user`
+
+Autenticação necessária, retorna um [Usuário](#Usuário) que é o usuário atual.
+
+
+### Usuário
 
 ```JSON
 {
