@@ -15,20 +15,21 @@ export class UserService {
   ) {}
 
   async createUser(createDto: CreateUserSchema): Promise<UserResponse> {
-    const newUser = new UserEntity();
+    const [userWithSameEmail, userWithSameUsername] = await Promise.all([
+      this.userRepository.findOne({ where: { email: createDto.email } }),
+      this.userRepository.findOne({ where: { username: createDto.username } })
+    ]);
 
-    const userWithSameEmail = await this.userRepository.findOne({
-      where: {
-        email: createDto.email,
-      },
-    });
+    if (userWithSameUsername) {
+      throw new ConflictException('User with same username already exists.');
+    }
 
     if (userWithSameEmail) {
       throw new ConflictException('User with same e-mail already exists.');
     }
 
+    const newUser = new UserEntity();
     const hashedPassword = await hash(createDto.password, 10);
-
     Object.assign(newUser, { ...createDto, password: hashedPassword });
 
     const user = await this.userRepository.save(newUser);
