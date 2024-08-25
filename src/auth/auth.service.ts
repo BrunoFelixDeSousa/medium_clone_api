@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { LoginDto } from '@app/auth/dto/login.dto';
+import { LoginSchema } from '@app/auth/schemas/loginSchema';
 import { Repository } from 'typeorm';
 import { UserEntity } from '@app/user/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,7 +14,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(loginDto: LoginDto) {
+  async login(loginDto: LoginSchema) {
     const user = await this.userRepository.findOne({
       where: {
         email: loginDto.email,

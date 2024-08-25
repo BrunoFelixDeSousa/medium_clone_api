@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import {
   TokenPayload,
   tokenPayloadSchema,
-} from '@app/auth/dto/tokenPayloadSchema';
+} from '@app/auth/schemas/tokenPayloadSchema';
 import * as dotenv from 'dotenv';
 dotenv.config();
 

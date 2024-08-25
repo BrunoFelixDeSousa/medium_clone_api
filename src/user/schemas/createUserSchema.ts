@@ -8,4 +8,4 @@ export const createUserSchema = z
   })
   .required();
 
-export type CreateUserDto = z.infer<typeof createUserSchema>;
+export type CreateUserSchema = z.infer<typeof createUserSchema>;
