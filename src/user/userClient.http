@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:8080/api
 
-@authToken =
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNjczMDUzNy0yNTYyLTRjMjAtODYwOC04YjA3ZDk3NmQ0YjAiLCJpYXQiOjE3MjQ2MTM1ODksImV4cCI6MTcyNDYxNzE4OX0.wbBjCe9mIo7s18YO8p_Qrd6bmuc40egZ-5lonMz2edE
 
 # @name Registrar Usuário
 POST {{baseUrl}}/users HTTP/1.1
@@ -15,3 +15,8 @@ content-type: application/json
 }
 
 ###
+
+# @name getCurrentUser
+GET {{baseUrl}}/users HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{authToken}}
