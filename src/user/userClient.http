@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:8080/api
 
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNjczMDUzNy0yNTYyLTRjMjAtODYwOC04YjA3ZDk3NmQ0YjAiLCJpYXQiOjE3MjQ2MTM1ODksImV4cCI6MTcyNDYxNzE4OX0.wbBjCe9mIo7s18YO8p_Qrd6bmuc40egZ-5lonMz2edE
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNjczMDUzNy0yNTYyLTRjMjAtODYwOC04YjA3ZDk3NmQ0YjAiLCJpYXQiOjE3MjQ2NzkzNjgsImV4cCI6MTcyNDY4Mjk2OH0.YBurSr7BslEGkDWIKkKb1I1pE17vLcsxQ326JUivlfo
 
 # @name Registrar Usuário
 POST {{baseUrl}}/users HTTP/1.1
@@ -16,7 +16,25 @@ content-type: application/json
 
 ###
 
-# @name getCurrentUser
+# @name Obter Usuário Atual
 GET {{baseUrl}}/users HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{authToken}}
+
+
+###
+
+# @name Atualizar Usuário
+PUT {{baseUrl}}/users HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "user":{
+    "username": "jane-Doe",
+    "email": "janedoe@email.com",
+    "password": "janeDoe1234",
+    "bio": "Desenvolvedor freelancer",
+    "image": ""
+  }
+}

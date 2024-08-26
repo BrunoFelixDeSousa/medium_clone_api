@@ -6,6 +6,7 @@ import { UserEntity } from '@app/user/user.entity';
 import { CreateUserSchema } from '@app/user/schemas/createUserSchema';
 import { UserResponse } from '@app/user/schemas/userResponseSchema';
 import { TokenPayload } from '@app/auth/schemas/tokenPayloadSchema';
+import { UpdateUserSchema } from '@app/user/schemas/updateUserSchema';
 
 @Injectable()
 export class UserService {
@@ -17,7 +18,7 @@ export class UserService {
   async createUser(createDto: CreateUserSchema): Promise<UserResponse> {
     const [userWithSameEmail, userWithSameUsername] = await Promise.all([
       this.userRepository.findOne({ where: { email: createDto.email } }),
-      this.userRepository.findOne({ where: { username: createDto.username } })
+      this.userRepository.findOne({ where: { username: createDto.username } }),
     ]);
 
     if (userWithSameUsername) {
@@ -38,14 +39,29 @@ export class UserService {
   }
 
   async findCurrentUser(userPayload: TokenPayload) {
-    const userId = userPayload.sub
+    const userId = userPayload.sub;
     const user = await this.userRepository.findOne({
       where: {
         id: userId,
-      }
+      },
     });
 
     const { password, ...result } = user;
+    return result;
+  }
+
+  async updateUser(userPayload: TokenPayload, userBody: UpdateUserSchema) {
+    const userUpdate = await this.userRepository.findOne({
+      where: {
+        id: userPayload.sub,
+      },
+    });
+
+    const hashedPassword = await hash(userBody.password, 10);
+    Object.assign(userUpdate, { ...userBody, password: hashedPassword });
+    await this.userRepository.save(userUpdate);
+    const { password, ...result } = userUpdate;
+
     return result;
   }
 }
