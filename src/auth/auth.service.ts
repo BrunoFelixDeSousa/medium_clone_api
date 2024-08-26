@@ -41,22 +41,17 @@ export class AuthService {
     };
   }
 
+  // não está funcionando
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.userRepository.findOne({
       where: { email },
     });
 
-    console.log('User found:', user); // Log para verificar se o usuário foi encontrado
-
     if (user && (await compare(password, user.password))) {
       const { password, ...result } = user;
-
-      console.log('Password valid:', result); // Log para verificar se a senha é válida
-
       return result;
     }
 
-    console.log('Validation failed'); // Log caso a validação falhe
     return null;
   }
 }

@@ -15,10 +15,10 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async createUser(createDto: CreateUserSchema): Promise<UserResponse> {
+  async createUser(userBody: CreateUserSchema): Promise<UserResponse> {
     const [userWithSameEmail, userWithSameUsername] = await Promise.all([
-      this.userRepository.findOne({ where: { email: createDto.email } }),
-      this.userRepository.findOne({ where: { username: createDto.username } }),
+      this.userRepository.findOne({ where: { email: userBody.email } }),
+      this.userRepository.findOne({ where: { username: userBody.username } }),
     ]);
 
     if (userWithSameUsername) {
@@ -30,24 +30,27 @@ export class UserService {
     }
 
     const newUser = new UserEntity();
-    const hashedPassword = await hash(createDto.password, 10);
-    Object.assign(newUser, { ...createDto, password: hashedPassword });
+    const hashedPassword = await hash(userBody.password, 10);
+    Object.assign(newUser, { ...userBody, password: hashedPassword });
 
     const user = await this.userRepository.save(newUser);
     const { password, ...result } = user;
-    return result;
+    return {
+      user: result
+    };
   }
 
   async findCurrentUser(userPayload: TokenPayload) {
-    const userId = userPayload.sub;
     const user = await this.userRepository.findOne({
       where: {
-        id: userId,
+        id: userPayload.sub,
       },
     });
 
     const { password, ...result } = user;
-    return result;
+    return {
+      user: result
+    };
   }
 
   async updateUser(userPayload: TokenPayload, userBody: UpdateUserSchema) {
@@ -62,6 +65,8 @@ export class UserService {
     await this.userRepository.save(userUpdate);
     const { password, ...result } = userUpdate;
 
-    return result;
+    return {
+      user: result
+    };
   }
 }

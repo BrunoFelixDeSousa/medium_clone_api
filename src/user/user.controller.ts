@@ -32,9 +32,9 @@ export class UserController {
   @HttpCode(HttpStatus.CREATED)
   @UsePipes(new ZodValidationPipe(createUserSchema))
   async createUser(
-    @Body('user') createUserDto: CreateUserSchema,
+    @Body('user') user: CreateUserSchema,
   ): Promise<UserResponse> {
-    return await this.userService.createUser(createUserDto);
+    return await this.userService.createUser(user);
   }
 
   @Get()
@@ -52,8 +52,8 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async updateUser(
     @CurrentUser() userPayload: TokenPayload,
-    @Body('user') userBody: UpdateUserSchema,
+    @Body('user') user: UpdateUserSchema,
   ): Promise<UserResponse> {
-    return await this.userService.updateUser(userPayload, userBody);
+    return await this.userService.updateUser(userPayload, user);
   }
 }
