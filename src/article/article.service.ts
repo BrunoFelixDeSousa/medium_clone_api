@@ -1,0 +1,48 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ArticleEntity } from '@app/article/article.entity';
+import { Repository } from 'typeorm';
+import { TokenPayload } from '@app/auth/schemas/tokenPayloadSchema';
+import { CreateArticleSchema } from '@app/article/schemas/createArticleSchema';
+import { UserEntity } from '@app/user/user.entity';
+import { ArticleResponse } from '@app/article/schemas/articleResponseSchema';
+import { convertToSlug } from '@app/utils'
+
+@Injectable()
+export class ArticleService {
+  constructor(
+    @InjectRepository(ArticleEntity)
+    private readonly articleRepository: Repository<ArticleEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+  ) {}
+
+  async createArticle(
+    userPayload: TokenPayload,
+    articleBody: CreateArticleSchema,
+  ): Promise<ArticleResponse> {
+    const author = await this.userRepository.findOne({
+      where: {
+        id: userPayload.sub,
+      },
+    });
+
+    const newArticle = new ArticleEntity();
+    Object.assign(newArticle, articleBody);
+    newArticle.author = author;
+    newArticle.slug = convertToSlug(articleBody.title);
+    const article = await this.articleRepository.save(newArticle);
+
+    const {
+      author: { id, password, ...resAuthor },
+      ...resArticle
+    } = article;
+
+    return {
+      article: {
+        ...resArticle,
+        author: resAuthor,
+      },
+    };
+  }
+}

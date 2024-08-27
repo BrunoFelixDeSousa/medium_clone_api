@@ -3,6 +3,7 @@ import { TagModule } from '@app/tag/tag.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from '@app/user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ArticleModule } from './article/article.module';
 
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -23,6 +24,7 @@ dotenv.config();
     TagModule,
     UserModule,
     AuthModule,
+    ArticleModule,
   ],
 })
 export class AppModule {}

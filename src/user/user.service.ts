@@ -36,7 +36,7 @@ export class UserService {
     const user = await this.userRepository.save(newUser);
     const { password, ...result } = user;
     return {
-      user: result
+      user: result,
     };
   }
 
@@ -49,7 +49,7 @@ export class UserService {
 
     const { password, ...result } = user;
     return {
-      user: result
+      user: result,
     };
   }
 
@@ -66,7 +66,7 @@ export class UserService {
     const { password, ...result } = userUpdate;
 
     return {
-      user: result
+      user: result,
     };
   }
 }
