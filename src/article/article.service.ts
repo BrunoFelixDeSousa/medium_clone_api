@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleEntity } from '@app/article/article.entity';
 import { Repository } from 'typeorm';
@@ -6,7 +11,7 @@ import { TokenPayload } from '@app/auth/schemas/tokenPayloadSchema';
 import { CreateArticleSchema } from '@app/article/schemas/createArticleSchema';
 import { UserEntity } from '@app/user/user.entity';
 import { ArticleResponse } from '@app/article/schemas/articleResponseSchema';
-import { convertToSlug } from '@app/utils'
+import { convertToSlug } from '@app/utils';
 
 @Injectable()
 export class ArticleService {
@@ -32,6 +37,32 @@ export class ArticleService {
     newArticle.author = author;
     newArticle.slug = convertToSlug(articleBody.title);
     const article = await this.articleRepository.save(newArticle);
+
+    const {
+      author: { id, password, ...resAuthor },
+      ...resArticle
+    } = article;
+
+    return {
+      article: {
+        ...resArticle,
+        author: resAuthor,
+      },
+    };
+  }
+
+  async getArticle(slug: string): Promise<ArticleResponse> {
+    const article = await this.articleRepository.findOne({
+      where: {
+        slug,
+      },
+    });
+    if (!article) {
+      throw new NotFoundException({
+        message: 'article not found',
+        statusCode: HttpStatus.NOT_FOUND,
+      });
+    }
 
     const {
       author: { id, password, ...resAuthor },

@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -30,5 +32,11 @@ export class ArticleController {
     article: CreateArticleSchema,
   ): Promise<ArticleResponse> {
     return await this.articleService.createArticle(userPayload, article);
+  }
+
+  @Get(':slug')
+  @HttpCode(HttpStatus.OK)
+  async getArticle(@Param('slug') slug: string): Promise<ArticleResponse> {
+    return await this.articleService.getArticle(slug);
   }
 }
