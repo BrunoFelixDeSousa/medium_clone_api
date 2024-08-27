@@ -12,6 +12,7 @@ import { CreateArticleSchema } from '@app/article/schemas/createArticleSchema';
 import { UserEntity } from '@app/user/user.entity';
 import { ArticleResponse } from '@app/article/schemas/articleResponseSchema';
 import { convertToSlug } from '@app/utils';
+import { DeleteResult } from 'typeorm';
 
 @Injectable()
 export class ArticleService {
@@ -75,5 +76,30 @@ export class ArticleService {
         author: resAuthor,
       },
     };
+  }
+
+  async deleteArticle(
+    slug: string,
+    userPayload: TokenPayload,
+  ): Promise<DeleteResult> {
+    const currentUserId = userPayload.sub;
+    const article = await this.articleRepository.findOne({
+      where: {
+        slug,
+      },
+    });
+
+    if (!article) {
+      throw new NotFoundException({
+        message: 'article not found',
+        statusCode: HttpStatus.NOT_FOUND,
+      });
+    }
+
+    if (article.author.id !== currentUserId) {
+      throw new HttpException('You are not an author', HttpStatus.FORBIDDEN);
+    }
+
+    return await this.articleRepository.delete({ slug });
   }
 }

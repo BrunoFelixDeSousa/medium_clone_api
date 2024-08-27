@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -18,6 +19,7 @@ import {
   CreateArticleSchema,
 } from '@app/article/schemas/createArticleSchema';
 import { ArticleResponse } from '@app/article/schemas/articleResponseSchema';
+import { DeleteResult } from 'typeorm';
 
 @Controller('articles')
 export class ArticleController {
@@ -38,5 +40,14 @@ export class ArticleController {
   @HttpCode(HttpStatus.OK)
   async getArticle(@Param('slug') slug: string): Promise<ArticleResponse> {
     return await this.articleService.getArticle(slug);
+  }
+
+  @Delete(':slug')
+  @UseGuards(JwtAuthGuard)
+  async deleteArticle(
+    @Param('slug') slug: string,
+    @CurrentUser() userPayload: TokenPayload,
+  ): Promise<DeleteResult> {
+    return await this.articleService.deleteArticle(slug, userPayload);
   }
 }
