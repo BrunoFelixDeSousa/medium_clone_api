@@ -60,8 +60,13 @@ export class UserService {
       },
     });
 
-    const hashedPassword = await hash(userBody.password, 10);
-    Object.assign(userUpdate, { ...userBody, password: hashedPassword });
+    if (userBody.password) {
+      const hashedPassword = await hash(userBody.password, 10);
+      Object.assign(userUpdate, { ...userBody, password: hashedPassword });
+    } else {
+      Object.assign(userUpdate, userBody);
+    }
+
     await this.userRepository.save(userUpdate);
     const { password, ...result } = userUpdate;
 
