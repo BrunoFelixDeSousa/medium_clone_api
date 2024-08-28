@@ -39,16 +39,10 @@ export class ArticleService {
     newArticle.slug = convertToSlug(articleBody.title);
     const article = await this.articleRepository.save(newArticle);
 
-    const {
-      author: { id, password, ...resAuthor },
-      ...resArticle
-    } = article;
+    const articleResponse = this.removeIdAndPassword(article);
 
     return {
-      article: {
-        ...resArticle,
-        author: resAuthor,
-      },
+      article: articleResponse,
     };
   }
 
@@ -65,16 +59,10 @@ export class ArticleService {
       });
     }
 
-    const {
-      author: { id, password, ...resAuthor },
-      ...resArticle
-    } = article;
+    const articleResponse = this.removeIdAndPassword(article);
 
     return {
-      article: {
-        ...resArticle,
-        author: resAuthor,
-      },
+      article: articleResponse,
     };
   }
 
@@ -101,5 +89,17 @@ export class ArticleService {
     }
 
     return await this.articleRepository.delete({ slug });
+  }
+
+  private removeIdAndPassword(article: ArticleEntity) {
+    const {
+      author: { id, password, ...resAuthor },
+      ...resArticle
+    } = article;
+
+    return {
+      ...resArticle,
+      author: resAuthor,
+    };
   }
 }
