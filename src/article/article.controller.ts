@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ArticleService } from '@app/article/article.service';
@@ -65,5 +66,13 @@ export class ArticleController {
     @CurrentUser() userPayload: TokenPayload,
   ): Promise<ArticleResponse> {
     return await this.articleService.updateArticle(slug, userPayload, article);
+  }
+
+  @Get()
+  async findAllArticles(
+    @CurrentUser() userPayload: TokenPayload,
+    @Query() query: any,
+  ) {
+    return this.articleService.findAllArticles(userPayload, query);
   }
 }

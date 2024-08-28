@@ -127,6 +127,53 @@ export class ArticleService {
     };
   }
 
+  async findAllArticles(userPayload: TokenPayload, query: any) {
+    const queryBuilder = this.articleRepository
+      .createQueryBuilder('articles')
+      .leftJoinAndSelect('articles.author', 'author')
+      .select([
+        'articles',
+        'author.username',
+        'author.bio',
+        'author.email',
+        'author.image',
+      ])
+      .orderBy('articles.created_at', 'DESC');
+
+    if (query.tag) {
+      queryBuilder.andWhere(':tag = ANY(articles.tagList)', {
+        tag: query.tag,
+      });
+    }
+
+    if (query.author) {
+      const author = await this.userRepository.findOne({
+        where: {
+          username: query.author,
+        },
+      });
+      queryBuilder.andWhere('articles.authorId = :id', {
+        id: author.id,
+      });
+    }
+
+    const articlesCount = await queryBuilder.getCount();
+
+    if (query.limit) {
+      queryBuilder.limit(query.limit);
+    }
+    if (query.offset) {
+      queryBuilder.offset(query.offset);
+    }
+
+    const articles = await queryBuilder.getMany();
+
+    return {
+      articles,
+      articlesCount,
+    };
+  }
+
   private removeIdAndPassword(article: ArticleEntity) {
     const {
       author: { id, password, ...resAuthor },
