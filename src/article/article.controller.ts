@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { ArticleService } from '@app/article/article.service';
@@ -20,6 +21,10 @@ import {
 } from '@app/article/schemas/createArticleSchema';
 import { ArticleResponse } from '@app/article/schemas/articleResponseSchema';
 import { DeleteResult } from 'typeorm';
+import {
+  UpdateArticleSchema,
+  updateArticleSchema,
+} from '@app/article/schemas/updateArticleSchema';
 
 @Controller('articles')
 export class ArticleController {
@@ -49,5 +54,16 @@ export class ArticleController {
     @CurrentUser() userPayload: TokenPayload,
   ): Promise<DeleteResult> {
     return await this.articleService.deleteArticle(slug, userPayload);
+  }
+
+  @Put(':slug')
+  @UseGuards(JwtAuthGuard)
+  async updateArticle(
+    @Param('slug') slug: string,
+    @Body('article', new ZodValidationPipe(updateArticleSchema))
+    article: UpdateArticleSchema,
+    @CurrentUser() userPayload: TokenPayload,
+  ): Promise<ArticleResponse> {
+    return await this.articleService.updateArticle(slug, userPayload, article);
   }
 }

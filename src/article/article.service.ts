@@ -13,6 +13,7 @@ import { UserEntity } from '@app/user/user.entity';
 import { ArticleResponse } from '@app/article/schemas/articleResponseSchema';
 import { convertToSlug } from '@app/utils';
 import { DeleteResult } from 'typeorm';
+import { UpdateArticleSchema } from '@app/article/schemas/updateArticleSchema';
 
 @Injectable()
 export class ArticleService {
@@ -89,6 +90,41 @@ export class ArticleService {
     }
 
     return await this.articleRepository.delete({ slug });
+  }
+
+  async updateArticle(
+    slug: string,
+    userPayload: TokenPayload,
+    updateArticle: UpdateArticleSchema,
+  ): Promise<ArticleResponse> {
+    const currentUserId = userPayload.sub;
+    const isArticle = await this.articleRepository.findOne({
+      where: {
+        slug,
+      },
+    });
+
+    if (!isArticle) {
+      throw new HttpException('Article not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (isArticle.author.id !== currentUserId) {
+      throw new HttpException('You are not an author', HttpStatus.FORBIDDEN);
+    }
+
+    // Object.assign(isArticle, updateArticle);
+    if (isArticle.title !== updateArticle.title) {
+      isArticle.slug = convertToSlug(updateArticle.title);
+    }
+    isArticle.title = updateArticle.title;
+    isArticle.description = updateArticle.description;
+    isArticle.body = updateArticle.body;
+
+    const article = await this.articleRepository.save(isArticle);
+    const articleResponse = this.removeIdAndPassword(article);
+    return {
+      article: articleResponse,
+    };
   }
 
   private removeIdAndPassword(article: ArticleEntity) {
