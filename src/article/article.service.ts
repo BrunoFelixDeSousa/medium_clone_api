@@ -127,7 +127,7 @@ export class ArticleService {
     };
   }
 
-  async findAllArticles(userPayload: TokenPayload, query: any) {
+  async findAllArticles(query: any) {
     const queryBuilder = this.articleRepository
       .createQueryBuilder('articles')
       .leftJoinAndSelect('articles.author', 'author')
@@ -172,6 +172,51 @@ export class ArticleService {
       articles,
       articlesCount,
     };
+  }
+
+  async addArticleToFavorite(slug: string, userPayload: TokenPayload) {
+    const currentUserId = userPayload.sub;
+    const [article, user] = await Promise.all([
+      this.articleRepository
+        .createQueryBuilder('article')
+        .leftJoinAndSelect('article.author', 'author')
+        .select([
+          'article',
+          'author.username',
+          'author.email',
+          'author.bio',
+          'author.image',
+        ])
+        .where('article.slug = slug', { slug })
+        .getOne(),
+
+      this.userRepository
+        .createQueryBuilder('user')
+        .leftJoinAndSelect('user.favorites', 'favorite')
+        .where('user.id = :id', { id: currentUserId })
+        .getOne(),
+    ]);
+
+    if (!article || !user) {
+      throw new HttpException(
+        'Article or user not found',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    const isNotFavorite =
+      user.favorites.findIndex(
+        (articleInFavorites) => articleInFavorites.id === article.id,
+      ) !== -1;
+
+    if (!isNotFavorite) {
+      user.favorites.push(article);
+      article.favoritesCount++;
+      await this.userRepository.save(user);
+      await this.articleRepository.save(article);
+    }
+
+    return { article };
   }
 
   private removeIdAndPassword(article: ArticleEntity) {

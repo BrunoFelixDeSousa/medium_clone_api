@@ -49,6 +49,7 @@ export class ArticleController {
   }
 
   @Delete(':slug')
+  @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
   async deleteArticle(
     @Param('slug') slug: string,
@@ -58,6 +59,7 @@ export class ArticleController {
   }
 
   @Put(':slug')
+  @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
   async updateArticle(
     @Param('slug') slug: string,
@@ -69,10 +71,18 @@ export class ArticleController {
   }
 
   @Get()
-  async findAllArticles(
+  @HttpCode(HttpStatus.OK)
+  async findAllArticles(@Query() query: any) {
+    return this.articleService.findAllArticles(query);
+  }
+
+  @Post(':slug/favorite')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  async addArticleToFavorite(
+    @Param('slug') slug: string,
     @CurrentUser() userPayload: TokenPayload,
-    @Query() query: any,
   ) {
-    return this.articleService.findAllArticles(userPayload, query);
+    return this.articleService.addArticleToFavorite(slug, userPayload);
   }
 }
