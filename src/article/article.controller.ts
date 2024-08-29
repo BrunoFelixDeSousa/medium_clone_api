@@ -85,4 +85,14 @@ export class ArticleController {
   ) {
     return this.articleService.addArticleToFavorite(slug, userPayload);
   }
+
+  @Delete(':slug/favorite')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  async removeArticleToFavorite(
+    @Param('slug') slug: string,
+    @CurrentUser() userPayload: TokenPayload,
+  ) {
+    return this.articleService.removeArticleToFavorite(slug, userPayload);
+  }
 }
