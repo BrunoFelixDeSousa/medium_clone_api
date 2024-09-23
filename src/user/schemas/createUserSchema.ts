@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const createUserSchema = z
   .object({
@@ -6,6 +6,6 @@ export const createUserSchema = z
     email: z.string().email('Invalid email format'),
     password: z.string().min(8, 'Password must be at least 8 characters long'),
   })
-  .required();
+  .required()
 
-export type CreateUserSchema = z.infer<typeof createUserSchema>;
+export type CreateUserSchema = z.infer<typeof createUserSchema>

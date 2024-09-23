@@ -1,12 +1,12 @@
-import { Module } from '@nestjs/common';
-import { TagModule } from '@app/tag/tag.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from '@app/user/user.module';
-import { AuthModule } from './auth/auth.module';
-import { ArticleModule } from './article/article.module';
+import { Module } from '@nestjs/common'
+import { TagModule } from '@app/tag/tag.module'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { UserModule } from '@app/user/user.module'
+import { AuthModule } from './auth/auth.module'
+import { ArticleModule } from './article/article.module'
 
-import * as dotenv from 'dotenv';
-dotenv.config();
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 @Module({
   imports: [

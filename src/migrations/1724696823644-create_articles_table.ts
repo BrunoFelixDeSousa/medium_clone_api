@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class CreateArticlesTable1724696823644 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -14,12 +14,12 @@ export class CreateArticlesTable1724696823644 implements MigrationInterface {
               tag_list TEXT[] NOT NULL,
               favorites_count INT DEFAULT 0
             );
-        `);
+        `)
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
             DROP TABLE "articles"
-        `);
+        `)
   }
 }

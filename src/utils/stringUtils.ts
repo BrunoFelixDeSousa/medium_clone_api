@@ -8,5 +8,5 @@ export function convertToSlug(title: string): string {
       .replace(/\s+/g, '-') +
     '-' +
     ((Math.random() * Math.pow(36, 6)) | 0).toString(36)
-  );
+  )
 }

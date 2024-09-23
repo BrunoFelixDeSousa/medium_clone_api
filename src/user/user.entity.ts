@@ -5,33 +5,33 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
-} from 'typeorm';
-import { ArticleEntity } from '@app/article/article.entity';
+} from 'typeorm'
+import { ArticleEntity } from '@app/article/article.entity'
 
 @Entity({ name: 'users' })
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: string
 
   @Column({ unique: true })
-  username: string;
+  username: string
 
   @Column()
-  email: string;
+  email: string
 
   @Column()
-  password: string;
+  password: string
 
   @Column({ default: '' })
-  bio: string;
+  bio: string
 
   @Column({ default: '' })
-  image: string;
+  image: string
 
   @OneToMany(() => ArticleEntity, (article) => article.author)
-  articles: ArticleEntity[];
+  articles: ArticleEntity[]
 
   @ManyToMany(() => ArticleEntity)
   @JoinTable()
-  favorites: ArticleEntity[];
+  favorites: ArticleEntity[]
 }

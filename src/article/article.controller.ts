@@ -10,22 +10,22 @@ import {
   Put,
   Query,
   UseGuards,
-} from '@nestjs/common';
-import { ArticleService } from '@app/article/article.service';
-import { ZodValidationPipe } from '@app/pipes/zod-validation-pipe';
-import { JwtAuthGuard } from '@app/auth/guard/jwtAuth.guard';
-import { CurrentUser } from '@app/auth/currentUser.decorator';
-import { TokenPayload } from '@app/auth/schemas/tokenPayloadSchema';
+} from '@nestjs/common'
+import { ArticleService } from '@app/article/article.service'
+import { ZodValidationPipe } from '@app/pipes/zod-validation-pipe'
+import { JwtAuthGuard } from '@app/auth/guard/jwtAuth.guard'
+import { CurrentUser } from '@app/auth/currentUser.decorator'
+import { TokenPayload } from '@app/auth/schemas/tokenPayloadSchema'
 import {
   createArticleSchema,
   CreateArticleSchema,
-} from '@app/article/schemas/createArticleSchema';
-import { ArticleResponse } from '@app/article/schemas/articleResponseSchema';
-import { DeleteResult } from 'typeorm';
+} from '@app/article/schemas/createArticleSchema'
+import { ArticleResponse } from '@app/article/schemas/articleResponseSchema'
+import { DeleteResult } from 'typeorm'
 import {
   UpdateArticleSchema,
   updateArticleSchema,
-} from '@app/article/schemas/updateArticleSchema';
+} from '@app/article/schemas/updateArticleSchema'
 
 @Controller('articles')
 export class ArticleController {
@@ -37,15 +37,15 @@ export class ArticleController {
   async createArticle(
     @CurrentUser() userPayload: TokenPayload,
     @Body('article', new ZodValidationPipe(createArticleSchema))
-    article: CreateArticleSchema,
+    article: CreateArticleSchema
   ): Promise<ArticleResponse> {
-    return await this.articleService.createArticle(userPayload, article);
+    return await this.articleService.createArticle(userPayload, article)
   }
 
   @Get(':slug')
   @HttpCode(HttpStatus.OK)
   async getArticle(@Param('slug') slug: string): Promise<ArticleResponse> {
-    return await this.articleService.getArticle(slug);
+    return await this.articleService.getArticle(slug)
   }
 
   @Delete(':slug')
@@ -53,9 +53,9 @@ export class ArticleController {
   @UseGuards(JwtAuthGuard)
   async deleteArticle(
     @Param('slug') slug: string,
-    @CurrentUser() userPayload: TokenPayload,
+    @CurrentUser() userPayload: TokenPayload
   ): Promise<DeleteResult> {
-    return await this.articleService.deleteArticle(slug, userPayload);
+    return await this.articleService.deleteArticle(slug, userPayload)
   }
 
   @Put(':slug')
@@ -65,15 +65,15 @@ export class ArticleController {
     @Param('slug') slug: string,
     @Body('article', new ZodValidationPipe(updateArticleSchema))
     article: UpdateArticleSchema,
-    @CurrentUser() userPayload: TokenPayload,
+    @CurrentUser() userPayload: TokenPayload
   ): Promise<ArticleResponse> {
-    return await this.articleService.updateArticle(slug, userPayload, article);
+    return await this.articleService.updateArticle(slug, userPayload, article)
   }
 
   @Get()
   @HttpCode(HttpStatus.OK)
   async findAllArticles(@Query() query: any) {
-    return this.articleService.findAllArticles(query);
+    return this.articleService.findAllArticles(query)
   }
 
   @Post(':slug/favorite')
@@ -81,9 +81,9 @@ export class ArticleController {
   @UseGuards(JwtAuthGuard)
   async addArticleToFavorite(
     @Param('slug') slug: string,
-    @CurrentUser() userPayload: TokenPayload,
+    @CurrentUser() userPayload: TokenPayload
   ) {
-    return this.articleService.addArticleToFavorite(slug, userPayload);
+    return this.articleService.addArticleToFavorite(slug, userPayload)
   }
 
   @Delete(':slug/favorite')
@@ -91,8 +91,8 @@ export class ArticleController {
   @UseGuards(JwtAuthGuard)
   async removeArticleToFavorite(
     @Param('slug') slug: string,
-    @CurrentUser() userPayload: TokenPayload,
+    @CurrentUser() userPayload: TokenPayload
   ) {
-    return this.articleService.removeArticleToFavorite(slug, userPayload);
+    return this.articleService.removeArticleToFavorite(slug, userPayload)
   }
 }

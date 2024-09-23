@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const userResponseSchema = z.object({
   id: z.string().uuid(),
@@ -6,10 +6,10 @@ export const userResponseSchema = z.object({
   email: z.string(),
   bio: z.string(),
   image: z.string(),
-});
+})
 
 export const userResponseBody = z.object({
   user: userResponseSchema,
-});
+})
 
-export type UserResponse = z.infer<typeof userResponseBody>;
+export type UserResponse = z.infer<typeof userResponseBody>

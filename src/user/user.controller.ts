@@ -8,21 +8,21 @@ import {
   Put,
   UseGuards,
   UsePipes,
-} from '@nestjs/common';
-import { UserService } from '@app/user/user.service';
-import { ZodValidationPipe } from '@app/pipes/zod-validation-pipe';
-import { UserResponse } from '@app/user/schemas/userResponseSchema';
-import { JwtAuthGuard } from '@app/auth/guard/jwtAuth.guard';
-import { CurrentUser } from '@app/auth/currentUser.decorator';
-import { TokenPayload } from '@app/auth/schemas/tokenPayloadSchema';
+} from '@nestjs/common'
+import { UserService } from '@app/user/user.service'
+import { ZodValidationPipe } from '@app/pipes/zod-validation-pipe'
+import { UserResponse } from '@app/user/schemas/userResponseSchema'
+import { JwtAuthGuard } from '@app/auth/guard/jwtAuth.guard'
+import { CurrentUser } from '@app/auth/currentUser.decorator'
+import { TokenPayload } from '@app/auth/schemas/tokenPayloadSchema'
 import {
   CreateUserSchema,
   createUserSchema,
-} from '@app/user/schemas/createUserSchema';
+} from '@app/user/schemas/createUserSchema'
 import {
   updateUserSchema,
   UpdateUserSchema,
-} from '@app/user/schemas/updateUserSchema';
+} from '@app/user/schemas/updateUserSchema'
 
 @Controller('users')
 export class UserController {
@@ -32,18 +32,18 @@ export class UserController {
   @HttpCode(HttpStatus.CREATED)
   @UsePipes(new ZodValidationPipe(createUserSchema))
   async createUser(
-    @Body('user') user: CreateUserSchema,
+    @Body('user') user: CreateUserSchema
   ): Promise<UserResponse> {
-    return await this.userService.createUser(user);
+    return await this.userService.createUser(user)
   }
 
   @Get()
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
   async currentUser(
-    @CurrentUser() userPayload: TokenPayload,
+    @CurrentUser() userPayload: TokenPayload
   ): Promise<UserResponse> {
-    return await this.userService.findCurrentUser(userPayload);
+    return await this.userService.findCurrentUser(userPayload)
   }
 
   @Put()
@@ -52,8 +52,8 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async updateUser(
     @CurrentUser() userPayload: TokenPayload,
-    @Body('user') user: UpdateUserSchema,
+    @Body('user') user: UpdateUserSchema
   ): Promise<UserResponse> {
-    return await this.userService.updateUser(userPayload, user);
+    return await this.userService.updateUser(userPayload, user)
   }
 }
