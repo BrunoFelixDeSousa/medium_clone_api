@@ -40,7 +40,7 @@ export class UserService {
     }
   }
 
-  async findCurrentUser(userPayload: TokenPayload) {
+  async findCurrentUser(userPayload: TokenPayload): Promise<UserResponse> {
     const user = await this.userRepository.findOne({
       where: {
         id: userPayload.sub,
@@ -53,7 +53,10 @@ export class UserService {
     }
   }
 
-  async updateUser(userPayload: TokenPayload, userBody: UpdateUserSchema) {
+  async updateUser(
+    userPayload: TokenPayload,
+    userBody: UpdateUserSchema
+  ): Promise<UserResponse> {
     const userUpdate = await this.userRepository.findOne({
       where: {
         id: userPayload.sub,

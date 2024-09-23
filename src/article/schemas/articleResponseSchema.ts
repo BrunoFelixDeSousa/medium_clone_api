@@ -8,20 +8,18 @@ export const authorSchema = z.object({
 })
 
 export const articleSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  description: z.string().optional(),
-  body: z.string().optional(),
-  tagList: z.array(z.string()).optional(),
-  slug: z.string().min(1, 'Slug is required'),
-  id: z.string().uuid('Invalid UUID format'),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  favoritesCount: z.number().int().nonnegative(),
-  author: authorSchema,
+  article: z.object({
+    title: z.string().min(1, 'Title is required'),
+    description: z.string().optional(),
+    body: z.string().optional(),
+    tagList: z.array(z.string()).optional(),
+    slug: z.string().min(1, 'Slug is required'),
+    id: z.string().uuid('Invalid UUID format'),
+    createdAt: z.date(),
+    updatedAt: z.date(),
+    favoritesCount: z.number().int().nonnegative(),
+    author: authorSchema,
+  }),
 })
 
-export const articleResponseBody = z.object({
-  article: articleSchema,
-})
-
-export type ArticleResponse = z.infer<typeof articleResponseBody>
+export type ArticleResponse = z.infer<typeof articleSchema>

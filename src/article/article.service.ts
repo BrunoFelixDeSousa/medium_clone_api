@@ -14,6 +14,7 @@ import { ArticleResponse } from '@app/article/schemas/articleResponseSchema'
 import { convertToSlug } from '@app/utils'
 import { DeleteResult } from 'typeorm'
 import { UpdateArticleSchema } from '@app/article/schemas/updateArticleSchema'
+import { FindAllArticlesQuery } from './schemas/findAllArticlesQuerySchema'
 
 @Injectable()
 export class ArticleService {
@@ -127,7 +128,7 @@ export class ArticleService {
     }
   }
 
-  async findAllArticles(query: any) {
+  async findAllArticles(query: FindAllArticlesQuery) {
     const queryBuilder = this.articleRepository
       .createQueryBuilder('articles')
       .leftJoinAndSelect('articles.author', 'author')

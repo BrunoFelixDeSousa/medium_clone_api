@@ -26,6 +26,7 @@ import {
   UpdateArticleSchema,
   updateArticleSchema,
 } from '@app/article/schemas/updateArticleSchema'
+import { FindAllArticlesQuery } from './schemas/findAllArticlesQuerySchema'
 
 @Controller('articles')
 export class ArticleController {
@@ -72,7 +73,7 @@ export class ArticleController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async findAllArticles(@Query() query: any) {
+  async findAllArticles(@Query() query: FindAllArticlesQuery) {
     return this.articleService.findAllArticles(query)
   }
 
