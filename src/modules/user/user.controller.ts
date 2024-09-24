@@ -9,20 +9,20 @@ import {
   UseGuards,
   UsePipes,
 } from '@nestjs/common'
-import { UserService } from '@app/user/user.service'
+import { UserService } from '@app/modules/user/user.service'
 import { ZodValidationPipe } from '@app/pipes/zod-validation-pipe'
-import { UserResponse } from '@app/user/schemas/userResponseSchema'
-import { JwtAuthGuard } from '@app/auth/guard/jwtAuth.guard'
-import { CurrentUser } from '@app/auth/currentUser.decorator'
-import { TokenPayload } from '@app/auth/schemas/tokenPayloadSchema'
+import { UserResponse } from '@app/modules/user/schemas/userResponseSchema'
+import { JwtAuthGuard } from '@app/modules/auth/guard/jwtAuth.guard'
+import { CurrentUser } from '@app/modules/auth/currentUser.decorator'
+import { TokenPayload } from '@app/modules/auth/schemas/tokenPayloadSchema'
 import {
   CreateUserSchema,
   createUserSchema,
-} from '@app/user/schemas/createUserSchema'
+} from '@app/modules/user/schemas/createUserSchema'
 import {
   updateUserSchema,
   UpdateUserSchema,
-} from '@app/user/schemas/updateUserSchema'
+} from '@app/modules/user/schemas/updateUserSchema'
 
 @Controller('users')
 export class UserController {

@@ -11,21 +11,21 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common'
-import { ArticleService } from '@app/article/article.service'
+import { ArticleService } from '@app/modules/article/article.service'
 import { ZodValidationPipe } from '@app/pipes/zod-validation-pipe'
-import { JwtAuthGuard } from '@app/auth/guard/jwtAuth.guard'
-import { CurrentUser } from '@app/auth/currentUser.decorator'
-import { TokenPayload } from '@app/auth/schemas/tokenPayloadSchema'
+import { JwtAuthGuard } from '@app/modules/auth/guard/jwtAuth.guard'
+import { CurrentUser } from '@app/modules/auth/currentUser.decorator'
+import { TokenPayload } from '@app/modules/auth/schemas/tokenPayloadSchema'
 import {
   createArticleSchema,
   CreateArticleSchema,
-} from '@app/article/schemas/createArticleSchema'
-import { ArticleResponse } from '@app/article/schemas/articleResponseSchema'
+} from '@app/modules/article/schemas/createArticleSchema'
+import { ArticleResponse } from '@app/modules/article/schemas/articleResponseSchema'
 import { DeleteResult } from 'typeorm'
 import {
   UpdateArticleSchema,
   updateArticleSchema,
-} from '@app/article/schemas/updateArticleSchema'
+} from '@app/modules/article/schemas/updateArticleSchema'
 import { FindAllArticlesQuery } from './schemas/findAllArticlesQuerySchema'
 
 @Controller('articles')

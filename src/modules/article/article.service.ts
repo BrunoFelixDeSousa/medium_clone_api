@@ -5,15 +5,15 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { ArticleEntity } from '@app/article/article.entity'
+import { ArticleEntity } from '@app/modules/article/article.entity'
 import { Repository } from 'typeorm'
-import { TokenPayload } from '@app/auth/schemas/tokenPayloadSchema'
-import { CreateArticleSchema } from '@app/article/schemas/createArticleSchema'
-import { UserEntity } from '@app/user/user.entity'
-import { ArticleResponse } from '@app/article/schemas/articleResponseSchema'
+import { TokenPayload } from '@app/modules/auth/schemas/tokenPayloadSchema'
+import { CreateArticleSchema } from '@app/modules/article/schemas/createArticleSchema'
+import { UserEntity } from '@app/modules/user/user.entity'
+import { ArticleResponse } from '@app/modules/article/schemas/articleResponseSchema'
 import { convertToSlug } from '@app/utils'
 import { DeleteResult } from 'typeorm'
-import { UpdateArticleSchema } from '@app/article/schemas/updateArticleSchema'
+import { UpdateArticleSchema } from '@app/modules/article/schemas/updateArticleSchema'
 import { FindAllArticlesQuery } from './schemas/findAllArticlesQuerySchema'
 
 @Injectable()

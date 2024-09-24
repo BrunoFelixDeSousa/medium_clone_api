@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
 } from 'typeorm'
-import { UserEntity } from '@app/user/user.entity'
+import { UserEntity } from '@app/modules/user/user.entity'
 
 @Entity({ name: 'articles' })
 export class ArticleEntity {

@@ -6,8 +6,8 @@ import {
   Post,
   UsePipes,
 } from '@nestjs/common'
-import { AuthService } from '@app/auth/auth.service'
-import { LoginSchema, loginSchema } from '@app/auth/schemas/loginSchema'
+import { AuthService } from '@app/modules/auth/auth.service'
+import { LoginSchema, loginSchema } from '@app/modules/auth/schemas/loginSchema'
 import { ZodValidationPipe } from '@app/pipes/zod-validation-pipe'
 
 @Controller('auth')

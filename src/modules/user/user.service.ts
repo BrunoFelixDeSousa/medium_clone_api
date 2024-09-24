@@ -2,11 +2,11 @@ import { ConflictException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { hash } from 'bcrypt'
-import { UserEntity } from '@app/user/user.entity'
-import { CreateUserSchema } from '@app/user/schemas/createUserSchema'
-import { UserResponse } from '@app/user/schemas/userResponseSchema'
-import { TokenPayload } from '@app/auth/schemas/tokenPayloadSchema'
-import { UpdateUserSchema } from '@app/user/schemas/updateUserSchema'
+import { UserEntity } from '@app/modules/user/user.entity'
+import { CreateUserSchema } from '@app/modules/user/schemas/createUserSchema'
+import { UserResponse } from '@app/modules/user/schemas/userResponseSchema'
+import { TokenPayload } from '@app/modules/auth/schemas/tokenPayloadSchema'
+import { UpdateUserSchema } from '@app/modules/user/schemas/updateUserSchema'
 
 @Injectable()
 export class UserService {
