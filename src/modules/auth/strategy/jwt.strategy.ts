@@ -6,14 +6,14 @@ import {
   tokenPayloadSchema,
 } from '@app/modules/auth/schemas/tokenPayloadSchema'
 import { ConfigService } from '@nestjs/config'
-import { Env } from '@app/configuration/configuration'
+import { Env } from '@app/config/env.config'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(configService: ConfigService<Env, true>) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: configService.get('JWT_KEY_SECRET', { infer: true }),
+      secretOrKey: configService.get('JWT_KEY_SECRET'),
     })
   }
 

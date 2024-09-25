@@ -5,27 +5,29 @@ import { TagModule } from '@app/modules/tag/tag.module'
 import { UserModule } from '@app/modules/user/user.module'
 import { AuthModule } from '@app/modules/auth/auth.module'
 import { ArticleModule } from '@app/modules/article/article.module'
-import configuration from '@app/configuration/configuration'
+import configuration, { Env } from '@app/config/env.config'
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [configuration],
-      isGlobal: true,
+      load: [configuration], // Carregando a configuração personalizada
+      isGlobal: true, // Tornando o módulo de configuração global
+      cache: true, // Cache para melhorar desempenho de `ConfigService#get`
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService<Env, true>) => ({
         type: 'postgres',
-        host: configService.get<string>('database.host'),
-        port: configService.get<number>('database.port'),
-        username: configService.get<string>('database.username'),
-        password: configService.get<string>('database.password'),
-        database: configService.get<string>('database.name'),
+        port: configService.get('DATABASE_PORT'),
+        host: configService.get('DATABASE_HOST'),
+        username: configService.get('DATABASE_USER'),
+        password: configService.get('DATABASE_PASSWORD'),
+        database: configService.get('DATABASE_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
         migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+        logging: ['query'],
       }),
     }),
     TagModule,

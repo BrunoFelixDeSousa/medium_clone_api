@@ -1,21 +1,23 @@
 import { z } from 'zod'
 
-export const envSchema = z.object({
-  PORT: z.coerce.number().optional().default(8080),
-  NODE_ENV: z
-    .enum(['development', 'production', 'test'])
-    .default('development'),
-  DATABASE_HOST: z.string(),
-  DATABASE_PORT: z.coerce.number().default(5433),
-  DATABASE_USER: z.string(),
-  DATABASE_PASSWORD: z.string(),
-  DATABASE_NAME: z.string(),
-  JWT_KEY_SECRET: z.string(),
-  JWT_EXPIRES_IN: z.string().default('1h'),
-  EMAIL_SERVICE: z.string().optional(),
-  EMAIL_USER: z.string().optional(),
-  EMAIL_PASSWORD: z.string().optional(),
-})
+export const envSchema = z
+  .object({
+    PORT: z.coerce.number().optional().default(8080),
+    NODE_ENV: z
+      .enum(['development', 'production', 'test'])
+      .default('development'),
+    DATABASE_HOST: z.string(),
+    DATABASE_PORT: z.coerce.number(),
+    DATABASE_USER: z.string(),
+    DATABASE_PASSWORD: z.string(),
+    DATABASE_NAME: z.string(),
+    JWT_KEY_SECRET: z.string(),
+    JWT_EXPIRES_IN: z.string(),
+    EMAIL_SERVICE: z.string().optional(),
+    EMAIL_USER: z.string().optional(),
+    EMAIL_PASSWORD: z.string().optional(),
+  })
+  .required()
 
 export type Env = z.infer<typeof envSchema>
 
