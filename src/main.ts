@@ -1,10 +1,18 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from '@app/app.module'
+import { ConfigService } from '@nestjs/config'
+import { Env } from './configuration/configuration'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'log', 'warn', 'verbose'],
+  })
   app.setGlobalPrefix('api')
-  await app.listen(8080)
+
+  const configService = app.get<ConfigService<Env, true>>(ConfigService)
+  const port = configService.get('PORT', { infer: true })
+
+  await app.listen(port)
 }
 bootstrap().then(() => {
   console.log(

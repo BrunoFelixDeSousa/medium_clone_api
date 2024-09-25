@@ -7,16 +7,20 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserEntity } from '@app/modules/user/user.entity'
 import { JwtStrategy } from '@app/modules/auth/strategy/jwt.strategy'
 import { LocalStrategy } from '@app/modules/auth/strategy/local.strategy'
-
-import * as dotenv from 'dotenv'
-dotenv.config()
+import { ConfigModule, ConfigService } from '@nestjs/config'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
-    JwtModule.register({
-      secret: process.env.JWT_KEY_SECRET,
-      signOptions: { expiresIn: '1d' },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_KEY_SECRET'),
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_EXPIRES_IN'),
+        },
+      }),
     }),
     UserModule,
   ],

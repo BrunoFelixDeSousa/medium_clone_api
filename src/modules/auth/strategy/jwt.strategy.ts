@@ -5,15 +5,15 @@ import {
   TokenPayload,
   tokenPayloadSchema,
 } from '@app/modules/auth/schemas/tokenPayloadSchema'
-import * as dotenv from 'dotenv'
-dotenv.config()
+import { ConfigService } from '@nestjs/config'
+import { Env } from '@app/configuration/configuration'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(configService: ConfigService<Env, true>) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: process.env.JWT_KEY_SECRET,
+      secretOrKey: configService.get('JWT_KEY_SECRET', { infer: true }),
     })
   }
 
